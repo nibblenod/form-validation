@@ -2,9 +2,32 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Title</title>
+    <title>Form Validation</title>
   </head>
   <body>
-    ello there!
+    <form novalidate>
+      <label for="email">Email: </label>
+      <input type="email" name="" id="email">
+
+      <select id="country">
+        <option value="ch">Switzerland</option>
+        <option value="fr">France</option>
+        <option value="de">Germany</option>
+        <option value="nl">The Netherlands</option>
+      </select>
+
+      <label for="postal-code">Postal Code: </label>
+      <input type="text" name="" id="postal-code">
+
+      <label for="password">Password: </label>
+      <input type="password" name="" id="password">
+
+      <label for="confirm-password">Confirm Password: </label>
+      <input type="password" name="" id="confirm-password">
+
+      <button type="submit">Submit</button>
+
+
+    </form>
   </body>
 </html>
