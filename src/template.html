@@ -5,15 +5,16 @@
     <title>Form Validation</title>
   </head>
   <body>
-    <form novalidate>
+    <form novalidate autocomplete="off">
       <div>
       <label for="email">Email: </label>
-      <input type="email" name="" id="email">
+      <input required type="email" name="" id="email">
       </div>
 
       <div>
         <label for="country">Country: </label>
-      <select id="country">
+      <select required id="country">
+        <option value=""></option>
         <option value="ch">Switzerland</option>
         <option value="fr">France</option>
         <option value="de">Germany</option>
@@ -23,7 +24,7 @@
 
       <div>
       <label for="postal-code">Postal Code: </label>
-      <input type="text" name="" id="postal-code">
+      <input required type="text" name="" id="postal-code">
       </div>
 
       <div>

@@ -1,2 +1,103 @@
 import "./styles.css";
 
+class FormValidation {
+  email;
+  form;
+  country;
+  postalCode;
+  password;
+  confirmPassword;
+
+  constructor() {
+    this.initialize();
+  }
+
+  initialize() {
+    this.#selectElements();
+    this.#addEventListeners();
+  }
+  #selectElements() {
+    this.email = document.querySelector("#email");
+    this.form = document.querySelector("form");
+    this.country = document.querySelector("#country");
+    this.postalCode = document.querySelector("#postal-code");
+    this.password = document.querySelector("#password");
+    this.confirmPassword = document.querySelector("#confirm-password");
+  }
+  #addEventListeners() {
+    this.email.addEventListener("input", () => this.#validateEmail(this.email));
+    this.form.addEventListener("submit", (event) =>
+      this.#ValidateForm(event, this.form),
+    );
+    this.country.addEventListener("input", () =>
+      this.#validateCountry(this.country),
+    );
+    this.postalCode.addEventListener("input", () =>
+      this.#validatePostalCode(this.postalCode, this.country),
+    );
+  }
+
+  #validatePostalCode(postalCode, country) {
+    postalCode.setCustomValidity("");
+    if (!country.validity.valid) {
+      postalCode.setCustomValidity("No country selected!");
+      postalCode.reportValidity();
+      return;
+    }
+    const constraints = {
+      ch: [
+        "^(CH-)?\\d{4}$",
+        "Swiss postal codes must have exactly 4 digits: e.g. CH-1950 or 1950",
+      ],
+      fr: [
+        "^(F-)?\\d{5}$",
+        "French postal codes must have exactly 5 digits: e.g. F-75012 or 75012",
+      ],
+      de: [
+        "^(D-)?\\d{5}$",
+        "German postal codes must have exactly 5 digits: e.g. D-12345 or 12345",
+      ],
+      nl: [
+        "^(NL-)?\\d{4}\\s*([A-RT-Z][A-Z]|S[BCE-RT-Z])$",
+        "Dutch postal codes must have exactly 4 digits, followed by 2 letters except SA, SD and SS",
+      ],
+    };
+
+    const constraint = new RegExp(constraints[country.value][0], "");
+
+    if (constraint.test(postalCode.value)) {
+      postalCode.setCustomValidity("");
+    } else {
+      postalCode.setCustomValidity(constraints[country.value][1]);
+    }
+    postalCode.reportValidity();
+  }
+
+  #validateCountry(countryElement) {
+    countryElement.setCustomValidity("");
+    if (countryElement.validity.valueMissing) {
+      countryElement.setCustomValidity("Selecting a country is mandatory!");
+    }
+    countryElement.reportValidity();
+  }
+
+  #validateEmail(emailElement) {
+    emailElement.setCustomValidity("");
+    if (emailElement.validity.typeMismatch) {
+      emailElement.setCustomValidity("Enter an email address!");
+    } else if (emailElement.validity.valueMissing) {
+      emailElement.setCustomValidity("Email address is mandatory!");
+    }
+    emailElement.reportValidity();
+  }
+
+  #ValidateForm(event, formElement) {
+    if (!formElement.checkValidity()) {
+      formElement.reportValidity();
+      event.preventDefault();
+    }
+  }
+}
+
+const formValidation = new FormValidation();
+formValidation.initialize();
