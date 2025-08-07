@@ -82,4 +82,10 @@ form > button {
   align-self: flex-start;
   margin-left: 160px;
 }
+form input:invalid {
+  border: 2px solid red;
+}
+form input:valid {
+  border: 2px solid green;
+}
 

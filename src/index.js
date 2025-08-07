@@ -35,8 +35,38 @@ class FormValidation {
     this.postalCode.addEventListener("input", () =>
       this.#validatePostalCode(this.postalCode, this.country),
     );
+    this.password.addEventListener("input", () =>
+      this.#validatePassword(this.password),
+    );
+    this.confirmPassword.addEventListener("input", () =>
+      this.#validateConfirmPassword(this.confirmPassword, this.password),
+    );
   }
 
+  #validateConfirmPassword(confirmPassword, password) {
+    confirmPassword.setCustomValidity("");
+    if (confirmPassword.value !== password.value) {
+      confirmPassword.setCustomValidity(
+        "Passwords do not match. Please re-enter.",
+      );
+    }
+    confirmPassword.reportValidity();
+  }
+  #validatePassword(password) {
+    password.setCustomValidity("");
+    const constraint = new RegExp(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/,
+    );
+    if (password.validity.valueMissing) {
+      password.setCustomValidity("Enter password!");
+    } else if (!constraint.test(password.value)) {
+      password.setCustomValidity(
+        "Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.",
+      );
+
+      password.reportValidity();
+    }
+  }
   #validatePostalCode(postalCode, country) {
     postalCode.setCustomValidity("");
     if (!country.validity.valid) {
